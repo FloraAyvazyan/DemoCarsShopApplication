@@ -11,6 +11,7 @@
     <groupId>ge.tsu</groupId>
     <artifactId>DemoCarsShopApplication</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging><!-- This is important! -->
     <name>Demo Cars Shop Application</name>
     <description>Our Car Shop Application</description>
     <properties>
@@ -30,6 +31,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- Tomcat starter becomes provided -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
@@ -95,6 +103,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
 
 
     </dependencies>

@@ -14,6 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
+@Slf4j
+@RequiredArgsConstructor
 @Controller
 public class AddCarController {
 
@@ -22,27 +29,32 @@ public class AddCarController {
 
     @GetMapping("/add")
     public String addCar(Model model) {
+        log.info("GET /add called - preparing form");
         model.addAttribute("addCar", new AddCar());
-        return "/add";  // looks for templates/car/add.html
+        return "/add";  // templates/add.html
     }
-
-
     @PostMapping("/add")
     public String saveCar(@Valid @ModelAttribute("addCar") AddCar addCar,
                           BindingResult bindingResult,
                           @RequestParam("image") MultipartFile image) throws IOException {
 
+        log.info("POST /add called with car data: {}", addCar);
+
         if (image.isEmpty()) {
-            // Changed "imagePath" to "image" to match the request param field name
+            log.warn("Image file is empty");
             bindingResult.addError(new FieldError("addCar", "image", "No image file selected"));
         }
 
         if (bindingResult.hasErrors()) {
-            return "/add";  // return form view if errors
+            log.debug("Validation errors: {}", bindingResult.getAllErrors());
+            return "/add";
         }
 
         Car newCar = carService.save(addCar, image);
+        log.info("New car saved with ID: {}", newCar.getId());
 
         return "redirect:/car/" + newCar.getId();
     }
+
+
 }
